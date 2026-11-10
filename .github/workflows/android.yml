@@ -9,7 +9,10 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: android-actions/setup-android@v3
+      - name: Accept licenses and install NDK
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;23.1.7779620" "platforms;android-35" "build-tools;35.0.0"
       - name: Build debug APK
         working-directory: apps/multiplatform
         run: ./gradlew assembleFossDebug
